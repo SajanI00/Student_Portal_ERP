@@ -1,0 +1,118 @@
+﻿@page "/results"
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@using System.Collections.Generic
+@using Npgsql
+@using MudBlazor
+
+<h3 style="text-align: center; padding-top: 20px">Results</h3>
+
+<div class="search-bar">
+    <MudTextField @bind-Value="@searchTerm" Label="Search" Variant="Variant.Filled" Icon="@Icons.Material.Filled.Search" IconSize="Size.Small" Dense="true" />
+</div>
+
+<style>
+    .table-container {
+        padding-left: 60px;
+        padding-right: 60px;
+        padding-top: 10px;
+    }
+
+    .search-bar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        text-align: center;
+        margin: auto;
+        width: 1200px;
+    }
+
+    .mud-input {
+        height: 45px;
+    }
+</style>
+
+<div class="table-container">
+    <MudTable Items="@FilteredData" Dense="true" Hover="true" Striped="true" PageSize="10" Class="table" AlignCenter="true">
+        <HeaderContent>
+            <MudTh>Reg No</MudTh>
+            <MudTh>Student Name</MudTh>
+            <MudTh>Maths</MudTh>
+            <MudTh>Electrical</MudTh>
+            <MudTh>Mechanical</MudTh>
+            <MudTh>Civil</MudTh>
+            <MudTh>English</MudTh>
+            <MudTh>GPA</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>@context.RegNo</MudTd>
+            <MudTd>@context.StudentName</MudTd>
+            <MudTd>@context.Maths</MudTd>
+            <MudTd>@context.Electrical</MudTd>
+            <MudTd>@context.Mechanical</MudTd>
+            <MudTd>@context.Civil</MudTd>
+            <MudTd>@context.English</MudTd>
+            <MudTd>@context.GPA</MudTd>
+        </RowTemplate>
+    </MudTable>
+</div>
+
+@code {
+
+    public class TableRow
+    {
+        public string RegNo { get; set; }
+        public string StudentName { get; set; }
+        public string Maths { get; set; }
+        public string Electrical { get; set; }
+        public string Mechanical { get; set; }
+        public string Civil { get; set; }
+        public string English { get; set; }
+        public decimal GPA { get; set; }
+    }
+    
+    // Define a list to hold the fetched data
+    private List<TableRow> ResultsData = new List<TableRow>();
+
+    // Filtered data based on search term
+    private IEnumerable<TableRow> FilteredData => ResultsData
+        .Where(row =>
+            row.RegNo.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+            row.StudentName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+            row.Maths.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+            row.Electrical.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+            row.Mechanical.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+            row.Civil.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+            row.English.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+            row.GPA.ToString().Contains(searchTerm)
+        );
+
+    // Search term for filtering
+    private string searchTerm = "";
+
+    // Fetch data from the PostgreSQL database
+    protected override async Task OnInitializedAsync()
+    {
+        string connString = Configuration.GetConnectionString("PgSqlConnection");
+        await using var conn = new NpgsqlConnection(connString);
+        await conn.OpenAsync();
+
+        await using var cmd = new NpgsqlCommand("SELECT * FROM sem1results22nd", conn);
+        await using var reader = await cmd.ExecuteReaderAsync();
+
+        while (await reader.ReadAsync())
+        {
+            ResultsData.Add(new TableRow
+                {
+                    RegNo = reader.GetString(0),
+                    StudentName = reader.GetString(1),
+                    Maths = reader.GetString(2),
+                    Electrical = reader.GetString(3),
+                    Mechanical = reader.GetString(4),
+                    Civil = reader.GetString(5),
+                    English = reader.GetString(6),
+                    GPA = reader.GetDecimal(7)
+                });
+        }
+    }
+}

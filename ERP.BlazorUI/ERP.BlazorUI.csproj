@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Components\Pages\Academic\**" />
+    <Compile Remove="Components\Pages\Department\**" />
+    <Compile Remove="Components\Pages\SiteAdmin\**" />
+    <Content Remove="Components\Pages\Academic\**" />
+    <Content Remove="Components\Pages\Department\**" />
+    <Content Remove="Components\Pages\SiteAdmin\**" />
+    <EmbeddedResource Remove="Components\Pages\Academic\**" />
+    <EmbeddedResource Remove="Components\Pages\Department\**" />
+    <EmbeddedResource Remove="Components\Pages\SiteAdmin\**" />
+    <None Remove="Components\Pages\Academic\**" />
+    <None Remove="Components\Pages\Department\**" />
+    <None Remove="Components\Pages\SiteAdmin\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Components\Pages\Hero.razor" />
+    <Content Remove="Components\Pages\Student\.razor" />
+    <Content Remove="wwwroot\images\1.jpg" />
+    <Content Remove="wwwroot\images\2.jpg" />
+    <Content Remove="wwwroot\images\3.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="FluentValidation" Version="11.9.0" />
+    <PackageReference Include="FontAwesome" Version="4.7.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
+    <PackageReference Include="MudBlazor" Version="6.11.2" />
+    <PackageReference Include="Npgsql" Version="8.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Application\ERP.Application.StudentApp\ERP.Application.StudentApp.csproj" />
+    <ProjectReference Include="..\..\Domain\ERP.Domain.Core\ERP.Domain.Core.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ERP.Repository.InMemory\ERP.Repository.InMemory.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ERP.Repository.PgSql\ERP.Repository.PgSql.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ERP.Repository.SQLite\ERP.Repository.SQLite.csproj" />
+    <ProjectReference Include="..\ERP.RazorComponents\ERP.RazorComponents.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="wwwroot\images\1.jpg" />
+    <Resource Include="wwwroot\images\2.jpg" />
+    <Resource Include="wwwroot\images\3.jpg" />
+  </ItemGroup>
+
+</Project>

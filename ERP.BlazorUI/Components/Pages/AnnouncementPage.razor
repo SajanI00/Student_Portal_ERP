@@ -1,0 +1,240 @@
+﻿@page "/announcements"
+@using ERP.Domain.Core.Entity
+@using Microsoft.EntityFrameworkCore
+@using ERP.Repository.PgSql
+@inject PgSqlDbContext DbContext
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<MudContainer>
+    <div class="heading">
+        <h3 class="center-align">Announcements</h3>
+    </div>
+
+    <!-- Search bar -->
+    <div class="search-container">
+        
+        <div style="padding-right:20px; width: 50%">
+            <MudTextField @bind-Value="searchTerm" Label="Search by keywords" Variant="Variant.Outlined"></MudTextField>
+        </div>
+        
+        <div style="padding-right: 20px;width: 40%">
+            <MudSelect Margin="Margin.Dense" T="string" Label="Filter by" Variant="Variant.Outlined" @bind-Value="searchCriteria">
+                <MudSelectItem Value="@("All")" />
+                <MudSelectItem Value="@("Keywords")" />
+                <MudSelectItem Value="@("Sender")" />
+                <MudSelectItem Value="@("Receiver")" />
+                <MudSelectItem Value="@("Announcement Type")" />
+            </MudSelect>
+        </div>
+        <MudButton @onclick="SearchMessages" Variant="Variant.Filled" Color="Color.Primary" Style="border-radius: 10px; padding: 10px 20px; background-color: {{Colors.DeepPurple.Accent3}}; color: white;">Search</MudButton>
+    </div>
+
+    <div class="chat-container">
+        <div class="chat-messages" >
+            @foreach (var message in FilteredMessages.OrderByDescending(m => m.Timestamp))
+            {
+                <div class="message received">
+
+                    <MudCard Class="@($"bg-{GetStripeColor(message.AnnouncementType.ToLower())}-light")">
+                        <MudCardContent>
+                            <!-- Display AnnouncementType above MudCard -->
+                            <div class="announcement-type">
+                                <span>@message.AnnouncementType</span>
+                            </div>
+                            <div class="message-info">
+                                <span>To: @message.Receiver</span>
+                            </div>
+                            <div>@message.Text</div>
+                            <div class="message-info" style="margin-top: 10px;">
+                                <!-- Added margin-top here -->
+                                <span>@message.Sender</span>
+                                <span>@message.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")</span>
+                            </div>
+                        </MudCardContent>
+                    </MudCard>
+                </div>
+            }
+        </div>
+    </div>
+</MudContainer>
+
+@code {
+
+    // Define method to get stripe color based on AnnouncementType
+    private string GetStripeColor(string announcementType)
+    {
+        // Default to blue if announcementType is not recognized
+        string color = "grey";
+
+        // Map announcement types to colors
+        switch (announcementType.ToLower())
+        {
+            case "general":
+                color = "blue";
+                break;
+            case "labs":
+                color = "green";
+                break;
+            case "hostel":
+                color = "pink";
+                break;
+            case "exams":
+                color = "lavender";
+                break;
+                // Add more cases for additional announcement types
+        }
+
+        return color;
+    }
+
+    // Define properties for search term and criteria
+    private string searchTerm = "";
+    private string searchCriteria = "All";
+
+    List<MessageInfo> Messages = new List<MessageInfo>();
+    List<MessageInfo> FilteredMessages = new List<MessageInfo>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Fetch messages from the database
+        Messages = await DbContext.Announcements.OrderByDescending(m => m.Timestamp).ToListAsync();
+        FilteredMessages = Messages;
+    }
+
+    // Method to filter messages based on search criteria
+    private void SearchMessages()
+    {
+        switch (searchCriteria)
+        {
+            case "Keywords":
+                FilteredMessages = Messages.Where(m => m.Text.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+                break;
+            case "Sender":
+                FilteredMessages = Messages.Where(m => m.Sender.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+                break;
+            case "Receiver":
+                FilteredMessages = Messages.Where(m => m.Receiver.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+                break;
+            case "AnnouncementType": // Filter by AnnouncementType
+                FilteredMessages = Messages.Where(m => m.AnnouncementType.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)).ToList();
+                break;
+            default:
+                FilteredMessages = Messages;
+                break;
+        }
+    }
+}
+
+<style>
+
+    .bg-blue-light {
+        background-color: transparent;
+        background-image: linear-gradient(to right, transparent 30%, lightblue);
+    }
+
+    .bg-green-light {
+        background-color: transparent;
+        background-image: linear-gradient(to right, transparent 30%, palegreen);
+    }
+
+    .bg-pink-light {
+        background-color: transparent;
+        background-image: linear-gradient(to right, transparent 5%, lavenderblush);
+    }
+
+    .bg-lavender-light {
+        background-color: transparent;
+        background-image: linear-gradient(to right, transparent 40%, lavender);
+    }
+
+    .bg-grey-light {
+        background-color: transparent;
+        background-image: linear-gradient(to right, transparent 40%, lightgrey);
+    }
+
+
+    body {
+        position: relative;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh; /* Ensure body covers the entire viewport height */
+        background-image: url('images/4.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9); /* Light grey color with 50% opacity */
+            z-index: -1;
+        }
+
+    .heading {
+        text-align: center;
+        padding: 20px;
+    }
+
+    .search-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+        .search-container input[type="text"] {
+            margin-right: 10px;
+        }
+
+        .search-container button {
+            margin-left: 10px;
+        }
+
+    .chat-container {
+        width: 100%;
+    }
+
+    .chat-messages {
+        overflow-y: auto;
+        padding: 10px;
+        align-items:center;
+        overflow-y: auto;
+        padding: 10px;
+    }
+
+    .message {
+        margin-bottom: 10px;
+    }
+
+    .message-content {
+        padding: 8px 12px;
+        border-radius: 8px;
+        max-width: 80%;
+        word-wrap: break-word;
+    }
+
+    .message-info {
+        display: flex;
+        justify-content: space-between;
+        color: #666;
+        font-size: 0.8rem;
+        margin-bottom: 5px;
+    }
+
+    /* Styles for AnnouncementType */
+    .announcement-type {
+        text-align: center;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+</style>

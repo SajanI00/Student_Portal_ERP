@@ -1,0 +1,66 @@
+﻿@rendermode InteractiveServer
+@using System.Net.Mail;
+@page "/requests"
+@using MudBlazor
+
+<MudText Typo="Typo.h3" Align="Align.Center">Requests</MudText>
+
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudPaper Class="pa-4">
+            <MudForm>
+                <div style="margin-bottom: 16px;">
+                    <MudTextField T="string" Required="true" @bind-Value="@SenderEmail" Label="Sender" />
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <MudTextField T="string" Label="Receiver" Required="true" @bind-Value="@ReceiverEmail" />
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <MudTextField T="string" Label="Subject" @bind-Value="@Subject" />
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <MudTextField T="string" Label="Content" @bind-Value="@Content" />
+                </div>
+
+                <div class="d-flex align-center justify-space-between">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="SendMail" Class="ml-auto">Send Request</MudButton>
+                </div>
+                <div class="d-flex align-center justify-space-between">
+                    <span style="font-weight:bold; font-size:28px;color:#c00">@Message</span>
+                </div>
+            </MudForm>
+        </MudPaper>
+    </MudItem>
+
+</MudGrid>
+
+@code {
+
+    private string SenderEmail { get; set; } = "";
+    private string ReceiverEmail { get; set; } = "";
+    private string Subject { get; set; } = "";
+    private string Content { get; set; } = "";
+    private string Message { get; set; } = "";
+
+    private void SendMail()
+    {
+        using (MailMessage mail = new MailMessage())
+        {
+            mail.From = new MailAddress(SenderEmail);
+            mail.To.Add(ReceiverEmail);
+            mail.Subject = Subject;
+            mail.Body = Content;
+            mail.IsBodyHtml = true;
+
+            using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+            {
+                smtp.UseDefaultCredentials = false;
+                smtp.Credentials = new System.Net.NetworkCredential("sandali811@gmail.com", "wmhg spgz msey xogr");
+                smtp.EnableSsl = true;
+                smtp.Send(mail);
+                Message = "Request Sent";
+            }
+        }
+    }
+
+}

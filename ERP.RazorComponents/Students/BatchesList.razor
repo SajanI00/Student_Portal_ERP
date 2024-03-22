@@ -1,0 +1,69 @@
+﻿@inject NavigationManager NavigationManager
+
+<div class="d-flex justify-content-center">
+    <MudTreeView T="string" ExpandOnClick="true" Class="mx-auto">
+
+        <MudCard Outlined="true" Elevation="3" Style="width: 600px;" Class="mt-3">
+            <MudTreeViewItem Value="@("24th Batch")">
+                <MudCard Elevation="0" Class="mb-2">
+                    <MudLink Href="/modules" Style="margin-left: 50px; margin-top: 10px;">2nd Semester</MudLink>
+                    <MudLink Href="/modules" Style="margin-left: 50px; margin-top: 10px;">1st Semester</MudLink>
+                </MudCard>
+            </MudTreeViewItem>
+        </MudCard>
+
+        <MudCard Outlined="true" Elevation="3" Style="width: 600px;" Class="mt-3">
+            <MudTreeViewItem Value="@("23rd Batch")">
+                <MudCard Elevation="0" Class="mb-2">
+                    <div class="d-flex flex-column">
+                        <MudLink Href="/modules" Style="margin-left: 50px; margin-top: 10px;">4th Semester</MudLink>
+                        <MudLink Href="/modules" Style="margin-left: 50px; margin-top: 10px;">3rd Semester</MudLink>
+                        <MudLink Href="/modules" Style="margin-left: 50px; margin-top: 10px;">2nd Semester</MudLink>
+                        <MudLink Href="/modules" Style="margin-left: 50px; margin-top: 10px;">1st Semester</MudLink>
+                    </div>
+                </MudCard>
+            </MudTreeViewItem>
+        </MudCard>
+
+        <MudCard Outlined="true" Elevation="3" Style="width: 600px;" Class="mt-3">
+            <MudTreeViewItem Value="@("22nd Batch")">
+                <MudCard Elevation="0" Class="mb-2">
+                    <div class="d-flex flex-column">
+                        <MudLink Href="/modules" Style="margin-left: 50px; margin-top: 10px;">5th Semester</MudLink>
+                        <MudLink Href="/modules" Style="margin-left: 50px; margin-top: 10px;">4th Semester</MudLink>
+                        <MudLink Href="/modules" Style="margin-left: 50px; margin-top: 10px;">3rd Semester</MudLink>
+                        <MudLink Href="/modules" Style="margin-left: 50px; margin-top: 10px;">2nd Semester</MudLink>
+                        <MudLink Href="/modules" Style="margin-left: 50px; margin-top: 10px;">1st Semester</MudLink>
+                    </div>
+                </MudCard>
+            </MudTreeViewItem>
+        </MudCard>
+
+        <MudCard Outlined="true" Elevation="3" Style="width: 600px;" Class="mt-3">
+            <MudTreeViewItem Value="@("21st Batch")">
+                <MudCard Elevation="0" Class="mb-2">
+                    <div class="d-flex flex-column">
+                        <MudLink Href="/modules" Style="margin-left: 50px; margin-top: 10px;">7th Semester</MudLink>
+                        <MudLink Href="/modules" Style="margin-left: 50px; margin-top: 10px;">6th Semester</MudLink>
+                        <MudLink Href="/modules" Style="margin-left: 50px; margin-top: 10px;">5th Semester</MudLink>
+                        <MudLink Href="/modules" Style="margin-left: 50px; margin-top: 10px;">4th Semester</MudLink>
+                        <MudLink Href="/modules" Style="margin-left: 50px; margin-top: 10px;">3rd Semester</MudLink>
+                        <MudLink Href="/modules" Style="margin-left: 50px; margin-top: 10px;">2nd Semester</MudLink>
+                        <MudLink Href="/modules" Style="margin-left: 50px; margin-top: 10px;">1st Semester</MudLink>
+                    </div>
+                </MudCard>
+            </MudTreeViewItem>
+        </MudCard>
+
+
+
+    </MudTreeView>
+</div>
+
+@code {
+
+    private void NavigateToModules()
+    {
+        NavigationManager.NavigateTo("/modules");
+    }
+}

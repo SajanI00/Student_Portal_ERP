@@ -1,0 +1,47 @@
+﻿@inject NavigationManager NavigationManager
+
+<div class="d-flex justify-content-center">
+    <MudTreeView T="string" ExpandOnClick="true" Class="mx-auto">
+
+        <MudCard Outlined="true" Elevation="3" Style="width: 600px;" Class="mt-3">
+            <MudTreeViewItem Value="@("5th Semester")">
+                <MudCard Elevation="0" Class="mb-2">
+                    <div class="d-flex flex-column">
+                        <MudLink Href="/modules" Color="Color.Info" Style="margin-left: 50px;">EE5454 : Software Group Project</MudLink>
+                        <MudLink Href="/modules" Color="Color.Info" Style="margin-left: 50px; margin-top: 10px;">EE5351 : Control Systems Design</MudLink>
+                        <MudLink Href="/modules" Color="Color.Info" Style="margin-left: 50px; margin-top: 10px;">EE5253 : Machine Learning</MudLink>
+                    </div>
+                </MudCard>
+            </MudTreeViewItem>
+        </MudCard>
+
+        <MudCard Outlined="true" Elevation="3" Style="width: 600px;" Class="mt-3">
+            <MudTreeViewItem Value="@("4th Semester")">
+                <MudCard Elevation="0" Class="mb-2">
+                    <div class="d-flex flex-column">
+                        <MudLink Href="/modules" Color="Color.Info" Style="margin-left: 50px;">EE4351 Digital Logic Design</MudLink>
+                    </div>
+                </MudCard>
+            </MudTreeViewItem>
+        </MudCard>
+
+        <MudCard Outlined="true" Elevation="3" Style="width: 600px;" Class="mt-3">
+            <MudTreeViewItem Value="@("3rd Semester")">
+                <MudCard Elevation="0" Class="mb-2">
+                    <div class="d-flex flex-column">
+                        <MudLink Href="/modules" Color="Color.Info" Style="margin-left: 50px;">EE3301 : Analog Electronics </MudLink>
+                    </div>
+                </MudCard>
+            </MudTreeViewItem>
+        </MudCard>
+
+    </MudTreeView>
+</div>
+
+@code {
+
+    private void NavigateToModules()
+    {
+        NavigationManager.NavigateTo("/modules");
+    }
+}

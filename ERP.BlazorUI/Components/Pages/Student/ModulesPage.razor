@@ -1,0 +1,21 @@
+﻿@* @page "/departments/{DepartmentId:int}/{BatchId:int}/{SemesterId:int}/modules" *@
+@using ERP.RazorComponents.Students
+@page "/modules"
+
+
+<MudPaper Class="w-100 mx-auto" Elevation="0" Style="@($"color:{Colors.Teal.Lighten1};")">
+
+    <MudPaper Class="pa-5 mt-8 mx-auto" Elevation="0" Style="@(($"width: 1000px;"))">
+        <MudText Typo="Typo.h4" Style="@($"color:{Colors.BlueGrey.Darken2};")">DEPARTMENT OF INTERDISCIPLINARY STUDIES/ 22nd Batch/ Semester 5</MudText>
+    </MudPaper>
+
+</MudPaper>
+
+<ModuleList/>
+
+
+
+
+@code {
+
+}
